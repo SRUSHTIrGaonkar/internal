@@ -1,442 +1,254 @@
-Creating a Maven Project
-Open >IntelliJ IDEA
-1.	Go to File > New Project.
+2.Maven
+file>newproject>mavenArchetype>firstPOMfile>select maven archetype-quickstart>create
 
-2.	Choose Maven from the list of project types.
-Understanding the POM File
-The POM (Project Object Model) file is the heart of a Maven project. It is an XML file that contains all the configuration details about the project. 
-Key element in pom.xml:
-•	<groupId>: The group or organization that the project belongs to.
-•	<artifactId>: The name of the project or artifact.
-•	<version>: The version of the project (often follows a format like 1.0-SNAPSHOT).
-•	<packaging>: Type of artifact, e.g., jar, war, pom, etc.
-•	<dependencies>: A list of dependencies the project requires.
-•	<build>: Specifies the build settings, such as plugins to use.
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-Dependency Management
-•	Maven uses the <dependencies> tag in the pom.xml to manage external libraries or dependencies that your project needs. When Maven builds the project, it will automatically download these dependencies from a repository (like Maven Central).
+  <groupId>org.example</groupId>
+  <artifactId>maven</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-Transitive Dependencies
-•	Maven automatically resolves transitive dependencies. For example, if you add a library that depends on other libraries, Maven will also download those.
-	
-Scopes
-•	Dependencies can have different scopes that determine when they are available:
-•	compile (default): Available in all build phases.
-•	provided: Available during compilation but not at runtime (e.g., a web server container).
-•	runtime: Needed only at runtime, not during compilation.
-•	test: Required only for testing.
+  <name>maven</name>
+  <url>http://maven.apache.org</url>
 
-Using Plugins
-Maven plugins are used to perform tasks during the build lifecycle, such as compiling code, running tests, packaging, and deploying.
-1.	Common Plugins
-•	maven-compiler-plugin: Compiles Java code.
-•	maven-surefire-plugin: Runs unit tests.
-•	maven-jar-plugin: Packages the project as a JAR file.
-•	maven-clean-plugin: Cleans up the target/ directory.
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-2.	Plugin Goals Each plugin consists of goals, which are specific tasks to be executed. For example:
-•	mvn clean install: This will clean the target directory and then install the package in the local repository.
-•	mvn compile: This will compile the source code.
-•	mvn test: This will run unit tests.
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-Step 1: Creating a Maven Project
-Open >IntelliJ IDEA
-1.	Go to File > New Project.
-2.	Choose Maven from the list of project types.
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.example.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
 
-Step 2: Open The pom.xml File
-open the file pom.xml and copy the code and paste it then save it.
-(    Copy pom.xml code from vtu code   )
+src>main>java>org,example>app.java
 
-Step 3: Open Java Code (App.java) File
-•	Open a file App.java inside the src/main/java/com/example/ directory.
-package com.example;
+package org.example;
+
 public class App {
-    public int add(int a, int b) {
-        return a + b;
-    }
     public static void main(String[] args) {
-        App app = new App();
-        int result = app.add(2, 3);
-        System.out.println("2 + 3 = " + result);
-        System.out.println("Application executed successfully!");
+        System.out.println("Hello, Maven!");
     }
 }
+ maven commands
 
-Step 4: Open Java Code (AppTest.java) File
-•	Open a file AppTest.java inside the src/test/java/com/example/ directory.
-
-package com.example;
-import org.junit.Assert;
-import org.junit.Test;
-public class AppTest {
-    @Test
-    public void testAdd() {
-        App app = new App();
-        int result = app.add(2, 3);
-        System.out.println("Running test: 2 + 3 = " + result);
-        Assert.assertEquals(5, result);
-    }
-}
-
-Step 4: Building the Project
-1.	Compile the Project
 mvn compile
-2.	Run the Unit Tests
 mvn test
+mvn package
+mvn clean
+mvn clean compile
+mvn package
+ java -jar target/maven-1.0-SNAPSHOT.jar
+------------------------------------------------------------------------------------------------------------------------------------------------
+2.Gradle
 
+file>newproject>kotlin>selectgradle>kotlinDSL>select JDK17>create
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+build.gradle.kts
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins {
+    kotlin("jvm") version "1.8.10"  // Use latest stable Kotlin version
+    application
+}
+group = "org.example"
+version = "1.0-SNAPSHOT"
+repositories {
+    mavenCentral()
+}
 
-3
+dependencies {
+    implementation(kotlin("stdlib"))  // Kotlin Standard Library
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
 
-Working with Gradle Project (Groovy DSL):
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+}
 
-Step 1: Create a new Project
-gradle init --type java-application
-•	while creating project it will ask necessary requirement:
-•	Enter target Java version (min: 7, default: 21): 17
-•	Project name (default: program3-groovy): groovyProject
-•	Select application structure:
-•	1: Single application project
-•	2: Application and library project
-•	Enter selection (default: Single application project) [1..2] 1
-•	Select build script DSL:
-•	1: Kotlin
-•	2: Groovy
-•	Enter selection (default: Kotlin) [1..2] 2
-•	Select test  framework:
-•	1: JUnit 4
-•	2: TestNG
-•	3: Spock
-•	4: JUnit Jupiter
-•	Enter selection (default: JUnit Jupiter) [1..4] 1
-•	Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no]
-•	no
+tasks.test {
+    useJUnitPlatform()
+}
 
-Step 2: build.gradle (Groovy DSL)
-(    Copy build.gradle code from vtu code   )
-
-Step 3: AdditionOperation.java(Change file name and update below code)
-•	After creating project change the file name.
-•	Manually navigate the folder path like src/main/java/org/example/
-•	Change the file name App.java to AdditionOperation.java
-package com.example;
-public class AdditionOperation {
-    public static void main(String[] args) {
-        double num1 = 5;
-        double num2 = 10;
-        double sum = num1 + num2;
-        System.out.printf("The sum of %.2f and %.2f is %.2f%n", num1, num2, sum);
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"  // Match with your JDK version
+}
+tasks.register<Jar>("fatJar") {
+    archiveClassifier.set("all")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    with(tasks.jar.get() as CopySpec)
+}
+tasks.register("hello") {
+    doLast {
+        println("Hello, Usha!")
     }
 }
 
-Step 4: AdditionOperationTest.java (JUnit Test) (Change file name and update below code)
-•	After creating project change the file name.
-•	Manually navigate the folder path like src/test/java/org/example/
-•	Change the file name AppTest.java to AdditionOperationTest.java
-package com.example;
-import org.junit.Test;
-import static org.junit.Assert.*;
-public class AdditionOperationTest {
-    @Test
-    public void testAddition() {
-        double num1 = 5;
-        double num2 = 10;
-        double expectedSum = num1 + num2;
-        double actualSum = num1 + num2;
-        assertEquals(expectedSum, actualSum, 0.01);
-    }
+application {
+    mainClass.set("MainKt")  // Update this if using a package
 }
 
-Step 5: Run Gradle Commands
-•	To build the project:
-gradle build
-•	To run the project:
-gradle run
-•	To test the project:
-gradle test
 
-Working with Gradle Project (Kotlin DSL):
+main.kt
 
-Step 1: Create a new Project
-gradle init --type java-application
-•	while creating project it will ask necessary requirement:
-•	Enter target Java version (min: 7, default: 21): 17
-•	Project name (default: program3-kotlin): kotlinProject
-•	Select application structure:
-•	1: Single application project
-•	2: Application and library project
-•	Enter selection (default: Single application project) [1..2] 1
-•	Select build script DSL:
-•	1: Kotlin
-•	2: Groovy
-•	Enter selection (default: Kotlin) [1..2] 1
-•	Select test  framework:
-•	1: JUnit 4
-•	2: TestNG
-•	3: Spock
-•	4: JUnit Jupiter
-•	Enter selection (default: JUnit Jupiter) [1..4] 1
-•	Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no]
-•	no
-
-Step 2: build.gradle.kts (Kotlin DSL)
-(    Copy build.gradle.kts code from vtu code   )
-
-Step 3: Main.kt (Change file name and update below code)
-•	After creating project change the file name.
-•	Manually navigate the folder path like src/main/java/org/example/
-•	Change the file name App.java to Main.kt
-package com.example
-fun addNumbers(num1: Double, num2: Double): Double {
-    return num1 + num2
-}
 fun main() {
-    val num1 = 10.0
-    val num2 = 5.0
-    val result = addNumbers(num1, num2)
-    println("The sum of $num1 and $num2 is: $result")
+    println("Hello, Gradle with Kotlin DSL")
+
 }
 
-Step 4: MainTest.kt (JUnit Test) (Change file name and update below code)
-•	After creating project change the file name.
-•	Manually navigate the folder path like src/test/java/org/com/example/
-•	Change the file name MainTest.java to MainTest.kt
-package com.example
-import org.junit.Assert.*
-import org.junit.Test
-class MainTest {
-    @Test
-    fun testAddNumbers() {
-        val num1 = 10.0
-        val num2 = 5.0
-        val result = addNumbers(num1, num2)
-        assertEquals("The sum of $num1 and $num2 should be 15.0", 15.0, result, 0.001)
-    }
-}
+commands
+ .\gradlew build
+ .\gradlew run
+ .\gradlew fatJar
+ java -jar .\build\libs\untitled5-1.0-SNAPSHOT-all.jar
 
-Step 5: Run Gradle Commands
-•	To build the project:
-gradle build
-•	To run the project:
-gradle run
-•	To test the project:
-gradle test
+------------------------------------------------------------------------------------------------------------------------------------------
+4.Application with maven,migrate the same application to gradle
 
+file>newproject>mavenArchetype>maventogradle>select maven archetype-quickstart>create
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pom
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-4
+  <groupId>org.example</groupId>
+  <artifactId>maven</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-Step 1: Creating a Maven Project
-Open >IntelliJ IDEA
-1.	Go to File > New Project.
-2.	Choose Maven from the list of project types.
+  <name>maven</name>
+  <url>http://maven.apache.org</url>
 
-Step 2: Open The pom.xml File
-(    Copy pom.xml code from vtu code   )
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-Step 3: Open Java Code (App.java) File
-•	Open a file App.java inside the src/main/java/com/example/ directory.
-package com.example;
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.example.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+ 
+src>main>java>org,example>app.java
+app.java
+package org.example;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello, Maven");
-        System.out.println("This is the simple realworld example....");
-        int a = 5;
-        int b = 10;
-        System.out.println("Sum of " + a + " and " + b + " is " + sum(a, b));
-    }
-    public static int sum(int x, int y) {
-        return x + y;
+        System.out.println("Hello, from gradle!");
     }
 }
 
-Step 4: Run the Project
-•	Open the terminal in the project directory and run the following command to build the project.
-mvn clean install
-mvn exec:java -Dexec.mainClass="com.example.App"
+build.gradle
+/*
+ * This file was generated by the Gradle 'init' task.
+ *
+ * This project uses @Incubating APIs which are subject to change.
+ */
 
-Step 5: Migrate the Maven Project to Gradle
-1.	Initialize Gradle
-gradle init
-•	It will ask Found a Maven build. Generate a Gradle build from this? (default: yes) [yes, no]
-•	Type Yes
-•	Select build script DSL:
-•	1: Kotlin
-•	2: Groovy
-•	Enter selection (default: Kotlin) [1..2]
-•	Type 2
-•	Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no]
-•	Type No
-2.	Navigate the project folder and open build.gradle file then add the below code and save it.
-(    Copy build.gradle code from vtu code   )
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
 
-Step 6: Run the Gradle Project
-•	To build the project:
-gradle build
-•	To run the project:
-gradle run
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
 
+dependencies {
+    testImplementation libs.junit.junit
+}
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+description = 'maven'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
 
-5
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
 
-What is Jenkins?
-Jenkins is an open-source automation server widely used in the field of Continuous Integration (CI) and Continuous Delivery (CD). It allows developers to automate the building, testing, and deployment of software projects, making the development process more efficient and reliable.
+commands
 
-Step 1: Update the System
-sudo apt update
-sudo apt upgrade
+1. mvn clean install
+2. mvn package
+3. java -jar .\target\FinalMavenToGradle-1.0-SNAPSHOT.jar  
+	Output- Hello from Gradle!
+4. gradle init --type pom     
+5. Select build script DSL:
+  1: Kotlin
+  2: Groovy
+	Select 2
+6. Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no] 
+		Yes
+7. gradle clean build
+8. java -jar .\target\FinalMavenToGradle-1.0-SNAPSHOT.jar
+	Output – Hello from Gradle!
 
-Step 2: Install Java
-sudo apt install openjdk-17-jdk
-Once Java is installed, verify the installation by checking the version:
-java -version
+--------------------------------------------------------------------------------------------------------------------------------------------
 
-Step 3: Add Jenkins Repository
-sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-sudo sh -c 'echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-
-Step 4: Install Jenkins
-sudo apt update
-sudo apt install Jenkins
-
-Step 5: Start and Enable Jenkins
-sudo systemctl start Jenkins
-sudo systemctl enable jenkins
-sudo systemctl status jenkins
-
-Step 6: Adjust the Firewall
-sudo ufw allow 8080
-sudo ufw reload
-sudo ufw status
-
-Step 7: Access Jenkins Web Interface
-http://your-server-ip:8080
-If you're running Jenkins locally, use:
-http://localhost:8080
-
-Step 8: Configure Jenkins
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-Click on Install suggested plugins to begin the process.
-Jenkins will automatically install the most commonly used plugins
-
-Step 9: Create the First Admin User
-Fill in the required fields 
-After creating the user, click Save and Finish.
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-6
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-7
-
-1. Introduction to Ansible 
-What Is Ansible? 
-Ansible is an open-source IT automation and configuration management tool. It allows you to 
-manage multiple servers and perform tasks such as: 
-                     Configuration Management: Automate the configuration of servers. 
-                     Application Deployment: Deploy applications consistently. 
-                     Orchestration: Coordinate complex IT workflows and processes. 
-
-Inventory: 
-An inventory is a file (usually in INI or YAML format) that lists the hosts (or groups of hosts) you 
-want to manage. It tells Ansible which machines to target. 
-
- Playbook: 
-A playbook is a YAML file that defines a set of tasks to be executed on your target hosts. It is the 
-heart of Ansible automation. 
-In a playbook, you specify: 
- Hosts: The target machines (or groups) on which the tasks should run. 
- Tasks: A list of actions (using modules) that should be executed. 
- Modules: Reusable, standalone scripts that perform specific actions (e.g., installing packages, copying files, configuring services).
-
- Modules: 
-Ansible comes with a large collection of built-in modules (such as apt, yum, copy, service, etc.). 
-These modules perform specific tasks on target hosts. You can also write custom modules if needed.
-
-
-Installing Ansible on Ubuntu
-
-Step 1: Update Your System 
-sudo apt update 
-sudo apt upgrade -y 
-
-Step 2: Install Ansible 
-sudo apt install ansible -y 
-
-Verify the installation by checking the version: 
-ansible --version 
-
-3. Creating an Ansible Inventory 
-
-Step 1: Create an Inventory File 
-1. Open your text editor to create a file called hosts.ini: 
-2. nano hosts.ini 
-3. Add the following content to define the local host: 
-4. [local]
-5. localhost ansible_connection=local 
-6. Save the file by pressing Ctrl+O then Enter, and exit with Ctrl+X.
-
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-9
-
-Azure DevOps is a comprehensive suite of cloud-based services designed to support the entire 
-software development lifecycle. 
-
-Setting Up an Azure DevOps Account
-
-Step 1: Sign Up for an Azure DevOps Account 
-1. Open Your Web Browser: 
- Navigate to the Azure DevOps website: https://dev.azure.com. 
-2. Sign In or Create a Microsoft Account:
-sign in or login
-1. Accept the Terms and Conditions:
-
-Step 2: Create an Azure DevOps Organization 
-
-1. Create a New Organization:
-Once signed in,
-Enter a unique name for your organization
-Select a Region
-Click “Continue” or “Create”
-
-2. Review Your Organization’s Dashboard: 
-
-3. Creating an Azure DevOps Project 
-
-Step 1: Create a New Project 
-
-1. Navigate to “New Project”: 
- click the “New Project” button. 
-
-2. Configure Your Project: 
- Project Name
- Description
- Visibility: 
-       Choose “Private” 
-       Choose “Public”
- Click “Create”. 
-
-Step 2: Explore Your Project Dashboard
